@@ -9,25 +9,8 @@ const pkmnApi = async () => {
         const pokeRes = await axios.all(subResponse);
 
         let pokemons = pokeRes.map(pk => pk.data);                                         // Devuelve los datos de cada pokemon
-        let pokeData = pokemons.map(pk => {                                                // Mapeamos los datos con la forma de nuestro modelo 
-            const pkmnData = {
-                id: pk.id,
-                name: pk.name,
-                sprite: pk.sprites.other.dream_world.front_default 
-                    || "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/MissingNo.png/320px-MissingNo.png",
-                height: pk.height,
-                weight: pk.weight,
-                hp: pk.stats[0].base_stat,
-                attack: pk.stats[1].base_stat,
-                defense: pk.stats[2].base_stat,
-                esp_attack: pk.stats[3].base_stat,
-                esp_defense: pk.stats[4].base_stat,
-                speed: pk.stats[5].base_stat,
-                types: pk.types.length < 2? [{name: pk.types[0].type.name}] 
-                    : [{name: pk.types[0].type.name}, {name: pk.types[1].type.name}]
-            };
-            return pkmnData
-        })
+        let pokeData = pokemons.map(pk => pkmnFormating(pk))                               // Mapeamos los datos con la forma de nuestro modelo 
+            
         console.log(pokeData)
         return pokeData
 
@@ -54,12 +37,12 @@ const pkmnDB = async () => {
 }
 
 // Mandamos todos los pokemon, tanto de Api como DB
-const getAllPokemon = async (req, res) => {
+const getAllPokemon = async () => {
     try {
         const pokemonApi = await pkmnApi();                    // Recibe los pokemon de la Api
         const pokemonDB = await pkmnDB();                      // Recibe los pokemon de la DB
         let response = [...pokemonApi, ...pokemonDB];          // Los concatena para enviarlos juntos
-        res.json(response.flat());
+        return response;
 
     } catch (e) {
         console.log(e);
@@ -93,6 +76,32 @@ const getPokemonByName = async (name) => {
     } catch (e) {
         console.log(e);
         return e;
+    }
+}
+
+const pkmnFormating = (Poke) => {
+    try {
+        const pkmnFormated = {
+            id: Poke.id,
+            name: Poke.name,
+            sprite: Poke.sprites.other.dream_world.front_default 
+                || "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/MissingNo.png/320px-MissingNo.png",
+            height: Poke.height,
+            weight: Poke.weight,
+            hp: Poke.stats[0].base_stat,
+            attack: Poke.stats[1].base_stat,
+            defense: Poke.stats[2].base_stat,
+            esp_attack: Poke.stats[3].base_stat,
+            esp_defense: Poke.stats[4].base_stat,
+            speed: Poke.stats[5].base_stat,
+            types: Poke.types.length < 2? [{name: Poke.types[0].type.name}] 
+                : [{name: Poke.types[0].type.name}, {name: Poke.types[1].type.name}]
+        };
+        return pkmnFormated;
+
+    } catch(e) {
+        console.error(e);
+        throw new Error ("There's no Pokémon to format")
     }
 }
 
