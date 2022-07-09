@@ -29,15 +29,15 @@ module.exports = (sequelize) => {
       type: DataTypes.SMALLINT,
       allowNull: false,
     },
-    defence: {
+    defense: {
       type: DataTypes.SMALLINT,
       allowNull: false,
     },
-    special_attack: {
+    esp_attack: {
       type: DataTypes.SMALLINT,
       allowNull: false,
     },
-    special_defense: {
+    esp_defense: {
       type: DataTypes.SMALLINT,
       allowNull: false,
     },
@@ -51,8 +51,5 @@ module.exports = (sequelize) => {
     weight: {
       type: DataTypes.DECIMAL,
     },
-    created: {
-      type: DataTypes.BOOLEAN,
-    }
   },  { timestamps: false } );
 };

@@ -11,14 +11,13 @@ const pkmnApi = async () => {
         let pokemons = pokeRes.map(pk => pk.data);                                         // Devuelve los datos de cada pokemon
         let pokeData = pokemons.map(pk => pkmnFormating(pk))                               // Mapeamos los datos con la forma de nuestro modelo 
             
-        console.log(pokeData)
         return pokeData
 
     } catch (e) {
         console.log(e);
         return e;
     }
-};
+}
 
 // Obtenemos los  pokemon desde la DB
 const pkmnDB = async () => {
@@ -54,24 +53,9 @@ const getAllPokemon = async () => {
 const getPokemonByName = async (name) => {
     try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)   // Nos devuelve los datos del pokemon que buscamos
-        const pkmnData = {                                                              // Formateamos la info a nuestro modelo
-            id: response.data.id,
-            name: response.data.name,
-            sprite: response.data.sprites.other.dream_world.front_default 
-            || "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/MissingNo.png/320px-MissingNo.png",
-            height: response.data.height,
-            weight: response.data.weight,
-            hp: response.data.stats[0].base_stat,
-            attack: response.data.stats[1].base_stat,
-            defense: response.data.stats[2].base_stat,
-            esp_attack: response.data.stats[3].base_stat,
-            esp_defense: response.data.stats[4].base_stat,
-            speed: response.data.stats[5].base_stat,
-            types: response.data.types.length < 2? [{name: response.data.types[0].type.name}] 
-            : [{name: response.data.types[0].type.name}, {name: response.data.types[1].type.name}]
-        };
+        let pkmnData = pkmnFormating(response.data);
         
-        return pkmnData              // Enviamos los datos del pokemon ya formateados
+        return pkmnData                                   // Enviamos los datos del pokemon ya formateados
 
     } catch (e) {
         console.log(e);
@@ -79,6 +63,21 @@ const getPokemonByName = async (name) => {
     }
 }
 
+// Obtener los pokemon buscando por ID
+const getPokemonByID = async (id) => {
+    try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`) // Nos devuelve los datos del pokemon por su id
+        let pkmnData = pkmnFormating(response.data);
+
+        return pkmnData;                                  // Enviamos los datos del pokémon ya formateados
+
+    } catch (e) {
+        console.error(e);
+        throw new Error (`Pokemon with id: ${id} Not Found`)
+    }
+}
+
+// Formateamos los datos de los pokemon
 const pkmnFormating = (Poke) => {
     try {
         const pkmnFormated = {
@@ -105,9 +104,54 @@ const pkmnFormating = (Poke) => {
     }
 }
 
+// Creamos un nuevo pokémon
+const createPokemon = async (pokeData) => {
+    try {
+        let createdPoke = {}
+        if(pokeData) {
+            const { name, sprite, height, weight, hp, attack, defense, esp_attack, esp_defense, speed, types } = pokeData;
+            let pokeFound = await Pokemon.findOne({
+                where: {
+                    name: name.toLowerCase()
+                }
+            })
+            if(pokeFound) {
+                throw new Error ("This Pokemon Name already Exists, try another")
+            }
+            let newPokemon = await Pokemon.create({
+                name: name.toLowerCase(),
+                sprite: sprite,
+                height: height,
+                weight: weight,
+                hp: hp,
+                attack: attack,
+                defense: defense,
+                esp_attack: esp_attack,
+                esp_defense: esp_defense,
+                speed: speed,
+            });
+            let pkmnType = await Type.findAll({
+                where: {
+                    name: types[0].name
+                }
+            })
+            console.log("Estoy en controller:", pkmnType)
+            createdPoke = await newPokemon.addType(pkmnType);
+        } 
+
+        return true
+        
+    } catch(e) {
+        console.error(e)
+        throw new Error (e)
+    }
+}
+
 module.exports = {
     pkmnApi,
     pkmnDB,
     getAllPokemon,
     getPokemonByName,
+    getPokemonByID,
+    createPokemon,
 }
