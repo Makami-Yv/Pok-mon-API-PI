@@ -1,0 +1,30 @@
+.pokemons_card {
+    height: 60rem;
+    width: 100%rem;
+    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly; 
+    text-decoration: none;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-around; 
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.pagination button {
+    font-size: 2em;
+    font-weight: bolder;
+    border-radius: 25px;
+    background-color: rgba(0,0,0,0.0);
+    border: none;
+}
+
+.pagination button:hover {
+    cursor: pointer;   
+    color: white;
+    background-color: rgba(0,0,0,0.1);
+}

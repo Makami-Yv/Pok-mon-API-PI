@@ -1,0 +1,49 @@
+.nav_container {
+    background-color: rgb(226, 19, 19);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nav_container a {
+    color: white;
+    font-size: 2rem;
+    font-weight: bolder;
+    text-decoration:  none;
+    text-align: center;
+}
+
+.logo {
+    margin-block: 5px;
+    width: 150px;
+    height: auto;
+}
+
+.logo:hover {
+    animation: bounce 1s infinite;
+}
+
+.list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search_container {
+    background-color: blueviolet;
+}
+
+@keyframes bounce{
+    20%,50%,80%, to{
+        transform: translateY(0);
+    }
+    40%{
+        transform: translateY(-15px);
+    }
+    70%{
+        transform: translateY(-10px);
+    }
+    90%{
+        transform: translateY(-5px);
+    }
+}

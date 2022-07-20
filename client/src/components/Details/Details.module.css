@@ -1,0 +1,87 @@
+.background {
+    height:max-content;
+    width: 100%rem;
+    background-size: 100% 100%;
+    background-image: url(../../images/land.png);
+    display: flex;
+    flex-direction: column;
+}
+
+.frame {
+    position: absolute;
+    top: 15px;
+    left: 12rem;
+    height: 600px;
+    width: 1000px;
+    background-image: url(../../images/frame.png);
+    background-size: 100% 120%;
+    background-repeat: no-repeat;
+    display: flex;
+}
+
+.pokebox {
+    margin-top: 8rem;
+    margin-inline: auto;
+    border-radius: 20px;
+    width: fit-content;
+    height: 450px;
+}
+
+.name {
+    margin: auto;
+    width: 20rem;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.data_container {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.pokemon_container {
+    text-align: center;
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    width: 20rem;
+}
+
+.pokemon_container img {
+    width: 18rem;
+    height: 18rem;
+    filter: drop-shadow(5px 10px 4px #3a3a3f);
+}
+
+.stats_container {
+    width: 20rem;
+    flex-direction: column;
+}
+
+.button_container {
+    margin-inline: auto;
+    margin-top: 36rem;
+}
+
+.button_container button {
+    margin-inline: 2rem;
+    font-size: 2em;
+    font-weight: bolder;
+    border-radius: 25px;
+    background-color: rgba(0,0,0,0.0);
+    border: none;
+}
+
+.button_container a {
+    color: black;
+}
+
+.button_container a:hover {
+    cursor: pointer;   
+    color: white;
+    border-radius: 25px;
+    background-color: rgba(0,0,0,0.5);
+}
+

@@ -1,0 +1,28 @@
+.card_container {
+    width: 250px;
+    height: 250px;
+    background: rgb(255, 254, 254);
+    background: linear-gradient(0deg, rgb(137, 214, 37) 2%, rgba(255,255,255,1) 100%);
+    border-radius: 140px;
+    margin: 2rem;
+    box-shadow: 0 9px 18px 0 #333333, 0 8px 24px 0 #333333;
+    text-align: center;
+}
+
+.sprite {
+    width: 150px;
+    height: 150px;
+    filter: drop-shadow(5px 10px 4px #3a3a3f);
+}
+
+.name {
+    font-weight: bolder;
+    color: black;
+    text-transform:capitalize;
+}
+
+.types {
+    color: white;
+    text-shadow: 2px 2px #313030;
+    text-transform:capitalize;
+}

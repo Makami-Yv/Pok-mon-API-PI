@@ -1,0 +1,5 @@
+.home_container {
+    background-size: 100% 100%;
+    background-image: url(../../images/land.png);
+    background-color: rgba(62, 176, 243, 0.848);
+}
