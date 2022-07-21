@@ -12,8 +12,6 @@ const initialState = {
     pokemons: [],
     copy: [],
     types: [],
-    filtered: [],
-    ordered: [],
     details: {},
 };
 
@@ -53,30 +51,47 @@ function rootReducer(state = initialState, action) {
 
         case FILTER_BY_TYPES:
             const typeFiltered =
-                action.payload === "All"
-                ? state.copy
-                : state.copy.map(pkmn => pkmn.types[0] === action.payload 
-                || pkmn.types[1] === action.payload)
+            action.payload === "All"
+            ? state.pokemons
+            : state.copy.filter(pkmn => 
+                pkmn.types.map(type => type.name)[0] === action.payload 
+                || pkmn.types.map(type => type.name)[1] === action.payload)
+            if(typeFiltered.length === 0) {
+                alert("There's no Pokémon with that Type.")
+                return {
+                    ...state,
+                    copy: state.pokemons
+                }
+            }
             return {
-                ...state,
-                filtered: typeFiltered
+            ...state,
+            copy: typeFiltered
             };
 
         case FILTER_BY_SOURCE:
             const sourceFiltered = 
                 action.payload === "AllSource"
-                ? state.copy
+                ? state.pokemons
                 : action.payload === "API"
-                ? state.copy.map(pkmn => isNaN(Number(pkmn.id)) === false)
-                : state.copy.map(pkmn => isNaN(Number(pkmn.id)) === true)
+                ? state.copy.filter(pkmn => isNaN(Number(pkmn.id)) === false)
+                : state.copy.filter(pkmn => isNaN(Number(pkmn.id)) === true)
+            if(sourceFiltered.length === 0) {
+                alert("There's no Pokémon with that Source.")
+                return {
+                    ...state,
+                    copy: state.pokemons
+                }
+            }
             return {
                 ...state,
-                filtered: sourceFiltered
+                copy: sourceFiltered
             };
 
         case ORDER_BY_NAME:
             let nameSort =
-                action.payload === "A-Z"
+                action.payload === "Any"
+                ? state.pokemons
+                : action.payload === "A-Z"
                 ? state.copy.sort(function (a, b) {
                     if (a.name > b.name) return 1;
                     if (b.name > a.name) return -1;
@@ -89,12 +104,14 @@ function rootReducer(state = initialState, action) {
                     })
             return {
                 ...state,
-                ordered: nameSort,
+                copy: nameSort,
             };
 
         case ORDER_BY_ATTACK:
             let attackSort =
-                action.payload === "Min-Max"
+                action.payload === "None"
+                ? state.pokemons
+                : action.payload === "Min-Max"
                 ? state.copy.sort(function (a, b) {
                     if (a.attack > b.attack) return 1;
                     if (b.attack > a.attack) return -1;
@@ -107,15 +124,13 @@ function rootReducer(state = initialState, action) {
                     });
             return {
                 ...state,
-                ordered: attackSort,
+                copy: attackSort,
             };
 
         case RESET:
             return {
                 ...state,
                 copy: state.pokemons,
-                filtered: [],
-                ordered: [],
             };
 
         case CLEAN_DETAIL:

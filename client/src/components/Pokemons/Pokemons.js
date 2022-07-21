@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { CardPokemon as Pokemon } from "../CardPokemon/CardPokemon";
 import { Link } from "react-router-dom";
 
 import {
     getAllPokemon,
     getTypes,
-    cleanDetails,
 } from "../../redux/actions";
 
+import { CardPokemon as Pokemon } from "../CardPokemon/CardPokemon";
 import { Loader } from "../Loader/Loader";
 import { NavBar } from "../NavBar/NavBar"
-// import { ErrorPage } from "../ErrorPage/ErrorPage";
-//import ErrorSearch from "../ErrorSearch/ErrorSearch";
 import styles from "./Pokemons.module.css";
 
 export function Pokemons() {
@@ -23,28 +20,32 @@ export function Pokemons() {
     let [counterPokemon, setCounterPokemon] = useState(1);    // Pagina en la que estamos
     const [pokemonPerPage] = useState(12);              // Cuantos pkmn tendremos por pagina
 
-    let lastPkmn = counterPokemon * pokemonPerPage; // el indice mayor por pagina
-    let firstPkmn = lastPkmn - pokemonPerPage; // el indice menor por pagina
+    let lastPkmn = counterPokemon * pokemonPerPage;     // el indice mayor por pagina
+    if(allPokemon.length < 12) lastPkmn = allPokemon.length;
+
+    let firstPkmn = lastPkmn - pokemonPerPage;          // el indice menor por pagina
+    if(firstPkmn < 1) firstPkmn = 0;
+    
     const indexPages = Math.ceil(allPokemon.length / pokemonPerPage);   // Numero de paginas en total
 
     const pokemonData = useSelector((state) =>
-        state.copy ? state.copy.slice(firstPkmn, lastPkmn) : false      // los pkmn de la pagina actual
+        state.copy.length > 1 
+            ? state.copy.slice(firstPkmn, lastPkmn) 
+            : [state.copy]                                     // los pkmn de la pagina actual
     );
 
     useEffect(() => {
-        dispatch(cleanDetails());
         dispatch(getAllPokemon());
         dispatch(getTypes());
     }, [dispatch]);
 
-    //const topScreen = document.getElementsByClassName("pokemons_card")
-
-    if (errorRender.length === 0) {
-        return (
-            <Loader />
-        );
+    if (pokemonData.flat().length === 0) {
+        if(errorRender.length === 0) {
+            return (
+                <Loader />
+            );
+        }
     } else {
-        //console.log(pokemonData)
         return (
         <div>
             <NavBar />

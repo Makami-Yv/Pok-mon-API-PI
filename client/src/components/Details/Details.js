@@ -2,12 +2,11 @@ import React from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Loader } from "../Loader/Loader";
-//import { ErrorPage } from "../ErrorPage/ErrorPage";
-import { NavBar } from "../NavBar/NavBar";
-// import { Footer } from "../Footer/Footer";
 
 import { getPokemonDetails, cleanDetails } from "../../redux/actions";
+
+import { Loader } from "../Loader/Loader";
+import { NavBar } from "../NavBar/NavBar";
 import styles from "./Details.module.css";
 
 export function Details() {
@@ -21,23 +20,21 @@ export function Details() {
         : prevPkmn = pkmn.id
 
     useEffect(() => {
-        dispatch(getPokemonDetails(params.id));
         dispatch(cleanDetails());
+        dispatch(getPokemonDetails(params.id));
     }, [dispatch, params.id]);
+
+    console.log(pkmn)
 
     if (!pkmn.name) {
         return (
         <div>
-            <div>
-                <NavBar/>
-            </div>
             <div>
                 <Loader />
             </div>
         </div>
         );
     } else if (pkmn.length !== 0) {
-        console.log(pkmn);
         return (
         <div className={styles.background}>
             <NavBar/>
@@ -87,7 +84,6 @@ export function Details() {
                     </Link>
                 </button>
             </div>
-            Foobar
         </div>
         );
     } else if (!pkmn.length) {
@@ -97,7 +93,6 @@ export function Details() {
             <div>
                 Error
             </div>
-            Foobar
         </div>
         );
     }

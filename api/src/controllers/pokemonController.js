@@ -66,10 +66,12 @@ const getPokemonByName = async (name) => {
 // Obtener los pokemon buscando por ID
 const getPokemonByID = async (id) => {
     try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`) // Nos devuelve los datos del pokemon por su id
-        let pkmnData = pkmnFormating(response.data);
+        if(id.search(/^[a-zA-Zñáéíóúü]*$/)) {                     // Comprobamos si hay letras
+            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`) // Nos devuelve los datos del pokemon por su id
+            let pkmnData = pkmnFormating(response.data);
+            return pkmnData;                                  // Enviamos los datos del pokémon ya formateados
+        } else throw new Error (`Pokemon with id: ${id} Not Found`)
 
-        return pkmnData;                                  // Enviamos los datos del pokémon ya formateados
 
     } catch (e) {
         console.error(e);

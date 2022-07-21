@@ -9,6 +9,10 @@
     text-align: center;
 }
 
+.card_container:hover {
+    box-shadow: 5px 12px 20px 0 #333333, 5px 11px 27px 0 #333333;    
+}
+
 .sprite {
     width: 150px;
     height: 150px;

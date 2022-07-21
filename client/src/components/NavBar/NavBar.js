@@ -1,6 +1,8 @@
 import React from "react";
-//import { SearchBar } from "../SearchBar/SearchBar";
+import { SearchBar } from "../SearchBar/SearchBar";
 import { Link } from "react-router-dom";
+
+import { SortFilter } from "../Sorts_Filters/SortFilter";
 import Logo from "../../images/pokeapi_flat.png";
 import styles from "./NavBar.module.css";
 
@@ -22,9 +24,8 @@ export function NavBar() {
                 <Link to={"/about"} style={{ textDecoration: "none" }}>
                     About
                 </Link>
-                <div className={styles.search_container}>
-                    Search
-                </div>
+                <SortFilter/>
+                <SearchBar/>
         </div>
     );
 }

@@ -21,6 +21,7 @@ export function getAllPokemon() {
     return async function(dispatch) {
         try {
             const pokemons = await axios.get(URL_POKEMON);  // Llamamos al backend
+            console.log("action: ",pokemons)
             return dispatch({
                 type: GET_PKMN,
                 payload: pokemons.data                          // Mandamos los datos
@@ -40,6 +41,9 @@ export function getPokemonByName(name) {
                 return alert("The Pokémon name should contain only letters")
             }
             const pokemon = await axios.get(URL_POKEMON + `/?name=${name}`) // Buscamos al pokemon por su nombre
+            if(pokemon.data.name === "AxiosError"){
+                return alert("There's no Pokémon with that name")
+            }
             return  dispatch({
                 type: GET_PKMN_BY_NAME,
                 payload: pokemon.data
@@ -56,6 +60,9 @@ export function getPokemonDetails(id) {
     return async function(dispatch) {
         try {
             const pokemon = await axios.get(URL_POKEMON + `/${id}`)
+            if(pokemon.data.name === "AxiosError"){
+                return alert("There's no Pokémon with that name")
+            }
             return dispatch({
                 type: GET_DETAILS,
                 payload: pokemon.data
